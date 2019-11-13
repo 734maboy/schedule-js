@@ -1,6 +1,11 @@
 <template>
-  <v-layout>
-  </v-layout>
+  <v-container 
+    class="pl-2 d-flex flex-column" 
+  >
+    <h1>
+      Загрузка изменений 
+    </h1>
+  </v-container>
 </template>
 
 <script>

@@ -5,11 +5,12 @@
       color="primary"
       dark
     >
+    
+      <router-link class="white--text" to="/">
+        <v-btn text> О нас </v-btn>
+      </router-link>
       <router-link class="white--text" to="/settings">
         <v-btn text> Настройки </v-btn>
-      </router-link>
-      <router-link class="white--text" to="/about">
-        <v-btn text> О нас </v-btn>
       </router-link>
       <router-link class="white--text" to="/load">
         <v-btn text> Загрузить изменения </v-btn>
