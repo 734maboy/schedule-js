@@ -3,6 +3,6 @@ module.exports = {
     'vuetify'
   ],
   chainWebpack: config => {
-    config.module.rules.delete('eslint');
-}
+    config.module.rules.delete('eslint')
+  }
 }

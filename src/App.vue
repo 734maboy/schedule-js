@@ -5,7 +5,7 @@
       color="primary"
       dark
     >
-    
+
       <router-link class="white--text" to="/">
         <v-btn text> Загрузить изменения </v-btn>
       </router-link>

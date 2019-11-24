@@ -20,7 +20,7 @@
         </v-item-group>
         <h2>Теги для поиска</h2>
         <v-item-group
-          
+
         >
           <h3 class="ml-2" >Тег для поиска имени группы</h3>
           <div
@@ -120,11 +120,11 @@
 </template>
 
 <script>
-  import { Schedule } from '../Schedule.js'
+import { Schedule } from '../Schedule.js'
 export default {
   data () {
     return {
-      _schedule: Schedule,
+      _schedule: Schedule
     }
   }
 }

@@ -1,10 +1,9 @@
 
-const axios = require('axios');
-
+const axios = require('axios')
 
 let Schedule = {
 
-  //#region  properties
+  // #region  properties
   // Ссылка на страницу получения расписания
   url: 'https://mpt.ru/studentu/izmeneniya-v-raspisanii/',
   // Ключевые слова для изменений в расписании
@@ -31,7 +30,7 @@ let Schedule = {
   // значение атрибута для поиска изменений в расписании группы
   attrValueGroup: 'table table-striped',
   // Название открывающего тега для поиска схождений
-  openTag: 'td', 
+  openTag: 'td',
   // Название закрывающего тега для поиска схождений
   closeTag: 'td',
   // Название атрибута для поиска изменения что заменяют
@@ -46,209 +45,182 @@ let Schedule = {
   fromToChanges: [],
   // Массив изменений НА какую дисциплину
   toFromChanges: [],
-  
-  //#endregion
 
-  //#region methods
+  // #endregion
+
+  // #region methods
 
   // Принимает один параметр
   // reguestType - Тип запроса (GET или POST), по умолчанию GET
   // ЗАполняет массивы fromToChanges и toFromChanges данными для парсинга
-  getScheduleChangesPage( requestType = "GET") {
+  getScheduleChangesPage (requestType = 'GET') {
     axios({
       method: 'get',
       url: this.url,
-      responseType: "text"
-    }).then( (response) => {
+      responseType: 'text'
+    }).then((response) => {
+      let text = response.data
 
-      let text = response.data;
+      let groupChanges = []
 
-      let groupChanges = [];
-      
-      
       while (true) {
+        let openExp = new RegExp('<' + this.openGroupTag + ' ' + this.attrGroup + '="' + this.attrValueGroup + '">', 'iu')
+        let closeExp = new RegExp('</' + this.openGroupTag + '>', 'iu')
 
-        let openExp = new RegExp('<' + this.openGroupTag + ' ' + this.attrGroup + '="' + this.attrValueGroup + '">', 'iu');
-        let closeExp = new RegExp('</' + this.openGroupTag + '>', 'iu');
+        let openMatch = text.match(openExp)
+        let closeMatch = text.match(closeExp)
 
-        let openMatch = text.match(openExp);   
-        let closeMatch = text.match(closeExp);
-        
-        
-        
-        if (openMatch == null && closeMatch == null) { break; }
-        
+        if (openMatch == null && closeMatch == null) { break }
+
         // console.log(closeMatch);
-        
 
-        let groupChangeRow = text.slice(openMatch.index, closeMatch.index + closeMatch[0].length + 1);
-        groupChanges.push(groupChangeRow);
+        let groupChangeRow = text.slice(openMatch.index, closeMatch.index + closeMatch[0].length + 1)
+        groupChanges.push(groupChangeRow)
 
-        text = text.slice(closeMatch.index + closeMatch[0].length + 1);
+        text = text.slice(closeMatch.index + closeMatch[0].length + 1)
       }
-      
 
       // this.mem = groupChanges;
 
       if (groupChanges == undefined || groupChanges == null) {
-        alert('Изменений в расписании нет, либо произошла непредвиденная ошибка, вы знаете куда обращаться');
+        alert('Изменений в расписании нет, либо произошла непредвиденная ошибка, вы знаете куда обращаться')
       } else {
-          this.getGroupScheduleChanges(groupChanges);
-      } 
-
-
-      
-    });
+        this.getGroupScheduleChanges(groupChanges)
+      }
+    })
   },
 
-  
-  getRegExp(tag, attr, attrValue) {
-    return new RegExp('<' + tag + '.*' + attr + '="' + attrValue + '".*>.*</.*' + tag + '>', 'gui');
+  getRegExp (tag, attr, attrValue) {
+    return new RegExp('<' + tag + '.*' + attr + '="' + attrValue + '".*>.*</.*' + tag + '>', 'gui')
   },
-  
-  cleanString ( arr, tag = '', attr = '', attrValue = '') {
 
-    let newArray = [];
-    let regExp = new RegExp(tag +'\|'+ attr +'\|' + attrValue + '\|<\|>\|/\|=\|"', 'gui');
-    
+  cleanString (arr, tag = '', attr = '', attrValue = '') {
+    let newArray = []
+    let regExp = new RegExp(tag + '\|' + attr + '\|' + attrValue + '\|<\|>\|/\|=\|"', 'gui')
+
     for (const element of arr) {
-      newArray.push(element.replace( regExp, '').trim());
+      newArray.push(element.replace(regExp, '').trim())
     }
 
-    return newArray;
+    return newArray
   },
 
-  getGroupScheduleChanges(arr) {
-    let gIndex = 0;
+  getGroupScheduleChanges (arr) {
+    let gIndex = 0
     for (let index = 0; index < arr.length; index++) {
-      let element = arr[index];
-      let groupNames = '';
+      let element = arr[index]
+      let groupNames = ''
 
-      let froms = [];
-      let toes = [];
-      groupNames = element.match(new RegExp('<b>.*</b>', 'ui'));
+      let froms = []
+      let toes = []
+      groupNames = element.match(new RegExp('<b>.*</b>', 'ui'))
 
-      froms = element.match(this.getRegExp(this.openTag, this.attrFromToName, this.attrValueFromTo));
-      toes = element.match(this.getRegExp(this.openTag, this.attrToFromName, this.attrValueToFrom));
+      froms = element.match(this.getRegExp(this.openTag, this.attrFromToName, this.attrValueFromTo))
+      toes = element.match(this.getRegExp(this.openTag, this.attrToFromName, this.attrValueToFrom))
 
-      
-      froms = this.cleanString(froms, this.openTag, this.attrFromToName, this.attrValueFromTo);
-      toes = this.cleanString(toes, this.openTag, this.attrToFromName, this.attrValueToFrom);    
+      froms = this.cleanString(froms, this.openTag, this.attrFromToName, this.attrValueFromTo)
+      toes = this.cleanString(toes, this.openTag, this.attrToFromName, this.attrValueToFrom)
 
       if (groupNames != null) {
         if (groupNames.length > 1) {
-          groups = groupNames.split(',');
-          
+          groups = groupNames.split(',')
+
           for (let i = 0; i < groups.length; i++) {
-            
+
           }
         } else {
-          if (froms.length != toes.length) { 
-            alert('Если это сообщение появилось, то произошла возможно самая фатальная ошибка в работе данного софта');
-            continue;
-          } 
+          if (froms.length != toes.length) {
+            alert('Если это сообщение появилось, то произошла возможно самая фатальная ошибка в работе данного софта')
+            continue
+          }
           for (let i = 0; i < froms.length; i++) {
+            let fromElement = froms[i]
 
-            let fromElement = froms[i];
-            
-            this.createScheduleRowObject(fromElement, this.fromToChanges, groupNames[0], gIndex);
-            gIndex++;
-            
+            this.createScheduleRowObject(fromElement, this.fromToChanges, groupNames[0], gIndex)
+            gIndex++
           }
 
-          for(let i = 0; i < toes.length; i++) {
-            
-            let toElement = toes[i];
-            this.createScheduleRowObject(toElement, this.toFromChanges, groupNames[0], gIndex);
-            gIndex++;
+          for (let i = 0; i < toes.length; i++) {
+            let toElement = toes[i]
+            this.createScheduleRowObject(toElement, this.toFromChanges, groupNames[0], gIndex)
+            gIndex++
           }
         }
       } else {
-        alert('Ошибка при поиске названия группы');
+        alert('Ошибка при поиске названия группы')
       }
-      
     }
-    console.log(this.fromToChanges);
-    console.log(this.toFromChanges);
+    console.log(this.fromToChanges)
+    console.log(this.toFromChanges)
   },
 
-  findChanges(regExp, text) {
-    let rows = text.match(regExp);
-    return (rows == null ) ? [] : rows;
+  findChanges (regExp, text) {
+    let rows = text.match(regExp)
+    return (rows == null) ? [] : rows
   },
 
-  isKeyworded(scheduleRow) {
-    scheduleRow = scheduleRow.toLowerCase();
+  isKeyworded (scheduleRow) {
+    scheduleRow = scheduleRow.toLowerCase()
 
     for (let index = 0; index < this.keywords.length; index++) {
-      let element = this.keywords[index].toLowerCase();
-      if ( scheduleRow.includes(element) ) {
-        return true;
-      }      
+      let element = this.keywords[index].toLowerCase()
+      if (scheduleRow.includes(element)) {
+        return true
+      }
     }
 
-    return false;
+    return false
   },
 
-  splitScheduleRow(scheduleRow) {
-    let teacherRegExp = /\p{Alpha}\.\p{Alpha}\./ui;
-    
-    let teacher = scheduleRow.match(teacherRegExp);
-    let lesson = '';
+  splitScheduleRow (scheduleRow) {
+    let teacherRegExp = /\p{Alpha}\.\p{Alpha}\./ui
 
-
+    let teacher = scheduleRow.match(teacherRegExp)
+    let lesson = ''
 
     if (teacher != null && teacher != undefined) {
-      lesson = scheduleRow.slice(0, teacher.index);
-      teacher = scheduleRow.slice(teacher.index);
-      
-      return [lesson, teacher];
+      lesson = scheduleRow.slice(0, teacher.index)
+      teacher = scheduleRow.slice(teacher.index)
+
+      return [lesson, teacher]
     } else {
-      return [];
+      return []
     }
   },
 
-  createScheduleRowObject(scheduleRow, changesArr, groupName, index) {
-
+  createScheduleRowObject (scheduleRow, changesArr, groupName, index) {
     if (!this.isKeyworded(scheduleRow)) {
+      scheduleRow = this.splitScheduleRow(scheduleRow)
 
-      scheduleRow = this.splitScheduleRow(scheduleRow);
-            
-
-      let lesson = '';
-      let teacher = '';
-      let group = this.cleanGroupName(groupName.trim().toLowerCase());
-      
+      let lesson = ''
+      let teacher = ''
+      let group = this.cleanGroupName(groupName.trim().toLowerCase())
 
       if (scheduleRow.length > 0) {
-        [lesson, teacher] = scheduleRow;        
+        [lesson, teacher] = scheduleRow
       }
 
       let scheduleObject = {
         index,
         group,
         lesson,
-        teacher,
-      };        
-      
-      changesArr.push(scheduleObject);
+        teacher
+      }
+
+      changesArr.push(scheduleObject)
     }
   },
 
-  cleanGroupName(messGroupName) {
-    return messGroupName.replace(/<|>|b|\//gui, '').trim();
+  cleanGroupName (messGroupName) {
+    return messGroupName.replace(/<|>|b|\//gui, '').trim()
   },
 
-  cleanChanges() {
-    this.fromToChanges = [];
-    this.toFromChanges = [];
-  },
+  cleanChanges () {
+    this.fromToChanges = []
+    this.toFromChanges = []
+  }
 
-  //#endregion 
-};
+  // #endregion
+}
 
-
-export { Schedule };
-
-
-
+export { Schedule }

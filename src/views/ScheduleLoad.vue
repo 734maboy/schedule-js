@@ -1,9 +1,9 @@
 <template>
-  <v-container 
-    class="pl-2 d-flex flex-column" 
+  <v-container
+    class="pl-2 d-flex flex-column"
   >
     <h1>
-      Загрузка изменений 
+      Загрузка изменений
     </h1>
   </v-container>
 </template>

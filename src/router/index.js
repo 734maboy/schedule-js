@@ -21,7 +21,7 @@ const routes = [
     path: '/settings',
     name: 'settings',
     component: Settings
-  },
+  }
 
 ]
 
