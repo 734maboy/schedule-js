@@ -7,13 +7,10 @@
     >
     
       <router-link class="white--text" to="/">
-        <v-btn text> О нас </v-btn>
+        <v-btn text> Загрузить изменения </v-btn>
       </router-link>
       <router-link class="white--text" to="/settings">
         <v-btn text> Настройки </v-btn>
-      </router-link>
-      <router-link class="white--text" to="/load">
-        <v-btn text> Загрузить изменения </v-btn>
       </router-link>
     </v-app-bar>
 

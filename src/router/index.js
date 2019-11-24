@@ -7,21 +7,21 @@ import About from '../views/About.vue'
 Vue.use(VueRouter)
 
 const routes = [
+  // {
+  //   path: '/',
+  //   name: 'about',
+  //   component: About
+  // },
   {
     path: '/',
-    name: 'about',
-    component: About
+    name: 'load',
+    component: ScheduleLoad
   },
   {
     path: '/settings',
     name: 'settings',
     component: Settings
   },
-  {
-    path: '/load',
-    name: 'load',
-    component: ScheduleLoad
-  }
 
 ]
 
