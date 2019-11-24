@@ -7,11 +7,6 @@ import About from '../views/About.vue'
 Vue.use(VueRouter)
 
 const routes = [
-  // {
-  //   path: '/',
-  //   name: 'about',
-  //   component: About
-  // },
   {
     path: '/',
     name: 'load',
