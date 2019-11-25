@@ -19,6 +19,7 @@
         dense
         outlined
         persistent-hint
+        append-icon="mdi-tag-plus"
         hint="Введите название нового атрибута и нажмите enter для добавления"
         label="Добавьте новый атрибут"
         placeholder="Новый атрибут"
@@ -28,9 +29,6 @@
       <v-divider
         class="my-6"
       ></v-divider>
-      <attribute-item></attribute-item>
-      <attribute-item></attribute-item>
-      <attribute-item></attribute-item>
       <attribute-item></attribute-item>
     </v-layout>
   </v-card>

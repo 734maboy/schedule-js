@@ -1,6 +1,7 @@
 <template>
   <v-container
     class="d-flex flex-column"
+    fluid
   >
       <h1>Настройки</h1>
 
@@ -20,7 +21,7 @@
         </v-item-group>
         <h2>Теги для поиска</h2>
         <v-item-group>
-          <setting-item></setting-item>
+          <tag-item></tag-item>
         </v-item-group>
       </v-layout>
   </v-container>
@@ -30,11 +31,11 @@
 
 import { Schedule } from '../Schedule.js'
 // Components
-import SettingItem from '../components/setting-item/setting-item'
+import TagItem from '../components/TagItem/TagItem'
 
 export default {
   components: {
-    SettingItem,
+    TagItem,
   },
   data () {
     return {
