@@ -21,7 +21,13 @@
         </v-item-group>
         <h2>Теги для поиска</h2>
         <v-item-group>
-          <tag-item></tag-item>
+          <tag-item
+            v-for="tag in tags"
+            :key = "tag.id"
+            :tag="tag"
+            :attrs="tag.attrs"
+            :values="tag.attrs.values"
+          ></tag-item>
         </v-item-group>
       </v-layout>
   </v-container>
@@ -41,6 +47,9 @@ export default {
     return {
       _schedule: Schedule
     }
-  }
+  },
+  computed: {
+    tags() { return this.$store.state.tags; },
+  },
 }
 </script>
