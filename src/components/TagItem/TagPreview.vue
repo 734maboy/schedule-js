@@ -2,7 +2,7 @@
   <v-card
     class="d-flex flex-column"
   >
-    <v-card-titl>Предпросмотр</v-card-titl>
+    <v-card-title>Предпросмотр</v-card-title>
     <code>
       {{ htmlOpenTag }} 
       <p
