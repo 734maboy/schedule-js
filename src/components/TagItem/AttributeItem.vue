@@ -42,19 +42,21 @@
           label="Введите новое значения атрибута"
           placeholder="Значение атрибута"
           append-icon="mdi-format-annotation-plus"
+          v-model="newAttributeValue"
+          @keyup.enter="addNewValueToAttribute"
         ></v-text-field>
         <v-layout
           v-if="isExpanded"
           class="d-flex flex-column justify-start"
           style="max-width: 250px; max-height: 180px; overflow-x: auto;"
         >
-          <v-text-field
-            outlined
-            dense
+          <value-item
             v-for="value in values"
-            v-model="value.value"
             :key="value.id"
-          ></v-text-field>
+            :valueId="value.id"
+            :attributeValue="value"
+            @ondelete="deleteValue"
+          ></value-item>
         </v-layout>
       </v-layout>
     </v-layout>
@@ -62,11 +64,17 @@
 </template>
 
 <script>
+import ValueItem from './ValueITem'
+
 export default {
   props: ['values', 'attr'],
+  components: {
+    ValueItem,
+  },
   data() {
     return {
       isExpanded: false,
+      newAttributeValue: '',
     }
   },
   computed: {
@@ -79,6 +87,20 @@ export default {
     deleteThisAttribute() {
       // do nothing 
     },
+    deleteValue(id) {
+      this.values.forEach((v, i) => {
+        if (v.id === id) {
+          this.values.splice(i, 1);
+        }
+      });
+    },
+    addNewValueToAttribute() {
+      this.attr.values.push({
+        id: Date.now(),
+        value: this.newAttributeValue,
+      });
+      this.newAttributeValue = '';
+    }
   },
 }
 </script>

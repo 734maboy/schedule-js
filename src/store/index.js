@@ -9,7 +9,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
 
-    nextTagId: 1,
     tags: [
       {
         id: 1,
