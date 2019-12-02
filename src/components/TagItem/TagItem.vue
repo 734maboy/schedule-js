@@ -30,6 +30,7 @@
     >
       <attribute-list
         :attrs="attributes"
+        :tag="tagRef"
       ></attribute-list>
     </v-layout>
   </v-container>
@@ -49,6 +50,9 @@ export default {
   computed: {
     attributes() {
       return this.attrs;
+    },
+    tagRef() {
+      return this.tag;
     }
   },
   data() {

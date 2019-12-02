@@ -77,15 +77,13 @@ export default {
       newAttributeValue: '',
     }
   },
-  computed: {
-  },
   methods: {
     toggleList() {
       this.isExpanded = !this.isExpanded;
       
     },
     deleteThisAttribute() {
-      // do nothing 
+      this.$emit('ondelete-attribute', this.attr.id);
     },
     deleteValue(id) {
       this.values.forEach((v, i) => {
